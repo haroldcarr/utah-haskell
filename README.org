@@ -41,6 +41,3 @@ Besides seeing the CURL responses, the browser will display the requests.
 
 - a "real" threepenny display pane that scrolls (so it shows/keeps all history)
 - prepare scotty for the specific assignment (I'm thinking about FOLD exercises)
-
-# Created       : 2015 Aug 24 (Mon) 18:06:29 by Harold Carr.
-Last Modified : 2015 Aug 24 (Mon) 18:55:10 by Harold Carr.
