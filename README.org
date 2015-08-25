@@ -3,7 +3,7 @@ Utah Haskell Infrastructure
 * main components and interaction
 
 Participants send answers to via [[http://www.serpentine.com/wreq][Wreq]] to a [[https://hackage.haskell.org/package/scotty][Scotty]]-based web service
-that poses additional challenges.
+that responds by posing additional challenges to participants.
 
 The Scotty server also displays what participants send via
 [[https://hackage.haskell.org/package/threepenny-gui][threepenny-gui]].  We will have a laptop plugged into a projector.  That
