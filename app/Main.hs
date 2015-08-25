@@ -1,10 +1,12 @@
 module Main where
 
-import           Control.Concurrent (forkIO)
+import           Control.Concurrent  (forkIO)
 import           LibScotty
 import           LibThreepenny
+import           Reactive.Threepenny (newEvent)
 
 main :: IO ()
 main = do
-    forkIO scottyMain
-    threepennyMain
+    (event, handler) <- newEvent
+    forkIO (scottyMain handler)
+    threepennyMain event

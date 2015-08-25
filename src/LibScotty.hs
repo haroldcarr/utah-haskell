@@ -6,9 +6,11 @@ module LibScotty
 )
 where
 
-import           Data.Aeson   (FromJSON, ToJSON)
-import           Data.Monoid  (mconcat)
+import           Control.Monad.IO.Class (liftIO)
+import           Data.Aeson             (FromJSON, ToJSON)
+import           Data.Monoid            (mconcat)
 import           GHC.Generics
+import           Reactive.Threepenny    (Handler (..))
 import           Web.Scotty
 
 data User = User { userId :: Int, userName :: String } deriving (Eq, Generic, Show)
@@ -19,24 +21,20 @@ allUsers  = [bob, jenny]
 instance ToJSON   User
 instance FromJSON User
 
-scottyMain :: IO ()
-scottyMain = scotty 3000 $ do
+scottyMain :: Handler String -> IO ()
+scottyMain handler = scotty 3000 $ do
     get "/users" $ do
+        liftIO (handler "/users")
         json allUsers
     get "/users/:id" $ do
         id <- param "id"
+        liftIO (handler ("/users/" ++ show id))
         json $ filter ((==id) . userId) allUsers
     post "/reg" $ do
-        e <- param "email" `rescue` (const next)
+        e <- param "email" `rescue` const next
+        liftIO (handler ("/reg " ++ show e))
         html $ mconcat [ "ok ", e ]
     get "/:word" $ do
         beam <- param "word"
+        liftIO (handler ("/* " ++ show beam))
         html $ mconcat ["<h1>Scotty, ", beam, " me up!</h1>"]
-
-{-
-curl http://127.0.0.1:3000/users
-curl http://127.0.0.1:3000/users/1
-curl -X POST http://127.0.0.1:3000/reg?email=foo
-curl http://127.0.0.1:3000/JUNK
--}
-

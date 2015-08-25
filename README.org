@@ -1,5 +1,7 @@
 Utah Haskell Infrastructure
 
+* main components and interaction
+
 Participants send answers to via [[http://www.serpentine.com/wreq][Wreq]] to a [[https://hackage.haskell.org/package/scotty][Scotty]]-based web service
 that poses additional challenges.
 
@@ -11,5 +13,34 @@ laptop will have a browser pointing to the threepenny-based display.
 wreq  -->  scotty  --> threepenny gui <-- browser
 #+end_example
 
+* build/run
+
+#+begin_example
+stack build
+stack exec utah-haskell-exe &
+#+end_example
+
+The above:
+- starts scotty at [[http://127.0.0.0:3000]]
+  - this is where 'wreq' requests should be sent
+- starts threepenny-gui at [[http://127.0.0.1:8023]]
+  - the browser connects here
+
+Then send requests:
+
+#+begin_example
+curl http://127.0.0.1:3000/users
+curl http://127.0.0.1:3000/users/1
+curl -X POST http://127.0.0.1:3000/reg?email=foo
+curl http://127.0.0.1:3000/JUNK
+#+end_example
+
+Besides seeing the CURL responses, the browser will display the requests.
+
+* TODO
+
+- a "real" threepenny display pane that scrolls (so it shows/keeps all history)
+- prepare scotty for the specific assignment (I'm thinking about FOLD exercises)
+
 # Created       : 2015 Aug 24 (Mon) 18:06:29 by Harold Carr.
-Last Modified : 2015 Aug 24 (Mon) 18:12:53 by Harold Carr.
+Last Modified : 2015 Aug 24 (Mon) 18:55:10 by Harold Carr.
