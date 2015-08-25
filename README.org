@@ -37,7 +37,7 @@ curl http://127.0.0.1:3000/JUNK
 
 Besides seeing the CURL responses, the browser will display the requests.
 
-* TODO
+* still TODO
 
 - a "real" threepenny display pane that scrolls (so it shows/keeps all history)
 - prepare scotty for the specific assignment (I'm thinking about FOLD exercises)
