@@ -1,0 +1,15 @@
+Utah Haskell Infrastructure
+
+Participants send answers to via [[http://www.serpentine.com/wreq][Wreq]] to a [[https://hackage.haskell.org/package/scotty][Scotty]]-based web service
+that poses additional challenges.
+
+The Scotty server also displays what participants send via
+[[https://hackage.haskell.org/package/threepenny-gui][threepenny-gui]].  We will have a laptop plugged into a projector.  That
+laptop will have a browser pointing to the threepenny-based display.
+
+#+begin_example
+wreq  -->  scotty  --> threepenny gui <-- browser
+#+end_example
+
+# Created       : 2015 Aug 24 (Mon) 18:06:29 by Harold Carr.
+Last Modified : 2015 Aug 24 (Mon) 18:12:53 by Harold Carr.
