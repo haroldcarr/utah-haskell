@@ -33,7 +33,7 @@ Participants can also send questions.  Everything sent is displayed.
 wreq  <-->  scotty  --> threepenny gui <-- browser
 #+end_example
 
-* build/run
+** build/run
 
 #+begin_example
 stack build
