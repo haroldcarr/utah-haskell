@@ -1,16 +1,36 @@
 Utah Haskell Infrastructure
 
-* main components and interaction
+* September 17, 2015 (Thursday)
 
-Participants send answers to via [[http://www.serpentine.com/wreq][Wreq]] to a [[https://hackage.haskell.org/package/scotty][Scotty]]-based web service
-that responds by posing additional challenges to participants.
+Themes
 
-The Scotty server also displays what participants send via
-[[https://hackage.haskell.org/package/threepenny-gui][threepenny-gui]].  We will have a laptop plugged into a projector.  That
-laptop will have a browser pointing to the threepenny-based display.
+- client-side REST using [[http://www.serpentine.com/wreq][Wreq]]
+- folds instead of explicit recursion
+  - http://learnyouahaskell.com/higher-order-functions
+    - scroll down/ search for 'Only folds and horses' (about 3/4 down)
+  - https://www.cs.nott.ac.uk/~gmh/fold.pdf
+    - sections 1 and 2
+- CIS 194 homework 1 exercises 1 and 4
+  - http://www.seas.upenn.edu/~cis194/hw/01-intro.pdf
+  - use a fold and solutions to #1 to implement #4
+
+* interaction
+
+Participants use [[http://www.serpentine.com/wreq][Wreq]] to talk to a [[https://hackage.haskell.org/package/scotty][Scotty]]-based web service we will have running.
+
+The Scotty server will be hooked up to a laptop plugged into a
+projects. It will display what participants send.
+
+The Scotty server responds by posing additional challenges to
+participants.  Participants can send (text-representations of)
+solutions to the challenges and/or can send solutions to the CIS 194.
+
+Participants can also send questions.  Everything sent is displayed.
+
+* scotty infrastructure
 
 #+begin_example
-wreq  -->  scotty  --> threepenny gui <-- browser
+wreq  <-->  scotty  --> threepenny gui <-- browser
 #+end_example
 
 * build/run
