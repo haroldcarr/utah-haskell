@@ -6,12 +6,15 @@ module LibScotty
 )
 where
 
-import           Control.Monad.IO.Class (liftIO)
-import           Data.Aeson             (FromJSON, ToJSON)
-import           Data.Monoid            (mconcat)
+import           Control.Monad.IO.Class  (liftIO)
+import           Data.Aeson              (FromJSON, ToJSON)
+import           Data.Monoid             (mconcat)
+import           Data.Text.Lazy          (unpack)
+import           Data.Text.Lazy.Encoding (decodeUtf8)
 import           GHC.Generics
-import           Reactive.Threepenny    (Handler (..))
+import           Reactive.Threepenny     (Handler (..))
 import           Web.Scotty
+
 
 data User = User { userId :: Int, userName :: String } deriving (Eq, Generic, Show)
 bob       = User 1 "bob"
@@ -32,7 +35,8 @@ scottyMain handler = scotty 3000 $ do
         json $ filter ((==id) . userId) allUsers
     post "/reg" $ do
         e <- param "email" `rescue` const next
-        liftIO (handler ("/reg " ++ show e))
+        b <- body
+        liftIO (handler ("/reg " ++ show e ++ " body: " ++ unpack (decodeUtf8 b)))
         html $ mconcat [ "ok ", e ]
     get "/:word" $ do
         beam <- param "word"

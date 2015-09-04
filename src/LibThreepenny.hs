@@ -31,6 +31,7 @@ threepennyMain event =
             addInput :: String -> UI ()
             addInput str = do
                 elInput <- UI.input # set value str
+                                    # set style [("width","800px")]
                 liftIO $ modifyIORef inputs (elInput:)
 
             addInputRedoLayout str = do
@@ -38,4 +39,5 @@ threepennyMain event =
                 redoLayout
 
         onEvent event addInputRedoLayout
-        addInputRedoLayout ""
+        addInputRedoLayout "Hello Utah Haskell"
+
