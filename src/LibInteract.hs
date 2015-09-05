@@ -17,23 +17,19 @@ import           GHC.Generics            hiding (P)
 
 {-
 Created       : 2015 Sep 02 (Wed) 11:56:37 by Harold Carr.
-Last Modified : 2015 Sep 04 (Fri) 17:00:12 by Harold Carr.
+Last Modified : 2015 Sep 04 (Fri) 17:20:10 by Harold Carr.
 -}
 
-newtype Name  = Name  String        deriving (Eq, Generic, Ord, Show)
-newtype MsgId = MsgId Int           deriving (Generic, Show)
-data    Msg   = Msg   MsgId  String deriving (Generic, Show)
-data    In    = In    Name   Msg    deriving (Generic, Show)
-data    User  = User  Name   MsgId  deriving (Show)
+type Name  = String
+type MsgId = Int
+data Msg   = Msg { msgId :: MsgId, msg   ::  String } deriving (Generic, Show)
+data In    = In  { uname :: Name , inMsg ::  Msg    } deriving (Generic, Show)
+data User  = User Name MsgId  deriving (Show)
 
-instance ToJSON   Name
-instance FromJSON Name
-instance ToJSON   MsgId
-instance FromJSON MsgId
-instance ToJSON   In
-instance FromJSON In
 instance ToJSON   Msg
 instance FromJSON Msg
+instance ToJSON   In
+instance FromJSON In
 
 challenges :: [(String,String)]
 challenges = [ ("foldC1","foldA1")
@@ -84,28 +80,26 @@ input gu pu i@(In name _) = do
 
 newUser :: Monad m => t -> (Name -> User -> m a) -> In -> m Msg
 newUser gu pu (In name _) = do
-    let n = 0
-    let msgId = MsgId n
+    let msgId = 0
     let user = User name msgId
     pu name user
-    return (mkMsg n)
+    return (mkMsg msgId)
 
 mkMsg :: Int -> Msg
-mkMsg n = Msg (MsgId n) (challenge n)
+mkMsg n = Msg n (challenge n)
 
 existingUser :: Monad m => t -> (Name -> User -> m a) -> In -> User -> m Msg
-existingUser gu pu   (In (Name name) (Msg (MsgId inN) msg))    u@(User _ (MsgId outN)) =
-    if inN /= outN ||
-       msg /= expect outN
-    then return (mkMsg outN)
+existingUser gu pu   (In name (Msg inId msg))    u@(User _ outId) =
+    if inId /= outId ||
+       msg /= expect outId
+    then return (mkMsg outId)
     else updateUser pu u
 
 updateUser :: Monad m => (Name -> User -> m a) -> User -> m Msg
-updateUser pu (User n@(Name name) (MsgId msgId)) = do
+updateUser pu (User name msgId) = do
     let newId = msgId + 1
-    let newMsgId = MsgId newId
-    let newUser = User n newMsgId
-    pu n newUser
+    let newUser = User name newId
+    pu name newUser
     return (mkMsg newId)
 
 test :: IO ()
@@ -113,9 +107,9 @@ test = do
     (gu,pu) <- gp
 --    gu (Name "Harold")
 --    pu (Name "Harold") (User (Name "Harold"))
-    one <- input gu pu (In (Name "Harold") (Msg (MsgId (-1)) "my name is harold"))
-    two <- input gu pu (In (Name "Harold") (Msg (MsgId    0) "my name is harold"))
-    thr <- input gu pu (In (Name "Harold") (Msg (MsgId    0) "foldA1"))
-    fou <- input gu pu (In (Name "Harold") (Msg (MsgId    1) "bad"))
-    fiv <- input gu pu (In (Name "Harold") (Msg (MsgId    1) "foldA2"))
+    one <- input gu pu (In "Harold" (Msg (-1) "my name is harold"))
+    two <- input gu pu (In "Harold" (Msg    0 "my name is harold"))
+    thr <- input gu pu (In "Harold" (Msg    0 "foldA1"))
+    fou <- input gu pu (In "Harold" (Msg    1 "bad"))
+    fiv <- input gu pu (In "Harold" (Msg    1 "foldA2"))
     mapM_ print [one,two,thr,fou,fiv]
