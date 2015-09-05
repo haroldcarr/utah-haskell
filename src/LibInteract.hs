@@ -17,13 +17,13 @@ import           GHC.Generics            hiding (P)
 
 {-
 Created       : 2015 Sep 02 (Wed) 11:56:37 by Harold Carr.
-Last Modified : 2015 Sep 04 (Fri) 17:20:10 by Harold Carr.
+Last Modified : 2015 Sep 04 (Fri) 21:52:41 by Harold Carr.
 -}
 
 type Name  = String
 type MsgId = Int
-data Msg   = Msg { msgId :: MsgId, msg   ::  String } deriving (Generic, Show)
-data In    = In  { uname :: Name , inMsg ::  Msg    } deriving (Generic, Show)
+data Msg   = Msg { msgId :: MsgId, txt :: String } deriving (Generic, Show)
+data In    = In  { name  :: Name , msg :: Msg    } deriving (Generic, Show)
 data User  = User Name MsgId  deriving (Show)
 
 instance ToJSON   Msg
@@ -32,9 +32,10 @@ instance ToJSON   In
 instance FromJSON In
 
 challenges :: [(String,String)]
-challenges = [ ("foldC1","foldA1")
+challenges = [ ("dummyC0","dummyC0")
+             , ("foldC1","foldA1")
              , ("foldC2","foldA2")
-             , ("foldC3","foldA3")
+             , ("foldC3","foldA4")
              ]
 
 challenge = ce fst
@@ -68,7 +69,7 @@ pu mv name user = do
 -- inputS :: G -> P -> String -> IO Msg
 inputS gu pu s =
     case decode (convertString s) of
-        Nothing -> error "NO WAY"
+        Nothing -> error ("NO WAY: " ++ (convertString s))
         (Just d) -> input gu pu d
 
 input :: G -> P -> In -> IO Msg
@@ -80,7 +81,7 @@ input gu pu i@(In name _) = do
 
 newUser :: Monad m => t -> (Name -> User -> m a) -> In -> m Msg
 newUser gu pu (In name _) = do
-    let msgId = 0
+    let msgId = 1
     let user = User name msgId
     pu name user
     return (mkMsg msgId)
@@ -113,3 +114,7 @@ test = do
     fou <- input gu pu (In "Harold" (Msg    1 "bad"))
     fiv <- input gu pu (In "Harold" (Msg    1 "foldA2"))
     mapM_ print [one,two,thr,fou,fiv]
+
+{-
+(decode (convertString  "{ \"name\": \"H\", \"msg\": {\"txt\":\"foldC3\",\"msgId\":2}  }")) :: (Maybe In)
+-}
