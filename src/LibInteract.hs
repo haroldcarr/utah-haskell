@@ -1,9 +1,13 @@
-{-# LANGUAGE DeriveGeneric     #-}
 {-# LANGUAGE OverloadedStrings #-}
-
+{-
+Created       : 2015 Aug 26 (Wed) 11:56:37 by Harold Carr.
+Last Modified : 2015 Sep 05 (Sat) 10:51:05 by Harold Carr.
+-}
 module LibInteract
        (
-         gp
+         G
+       , P
+       , gp
        , inputS
        , mkInvalidMsgResponse
        , mkValidMethodOrRoute
@@ -12,26 +16,10 @@ module LibInteract
 
 import           Control.Concurrent.MVar (MVar (..), newEmptyMVar, putMVar,
                                           takeMVar)
-import           Data.Aeson              (FromJSON, ToJSON, decode)
+import           Data.Aeson              (decode)
 import qualified Data.Map                as Map
 import           Data.String.Conversions (convertString)
-import           GHC.Generics            hiding (P)
-
-{-
-Created       : 2015 Sep 02 (Wed) 11:56:37 by Harold Carr.
-Last Modified : 2015 Sep 04 (Fri) 22:39:32 by Harold Carr.
--}
-
-type Name  = String
-type MsgId = Int
-data Msg   = Msg { msgId :: MsgId, txt :: String } deriving (Generic, Show)
-data In    = In  { name  :: Name , msg :: Msg    } deriving (Generic, Show)
-data User  = User Name MsgId  deriving (Show)
-
-instance ToJSON   Msg
-instance FromJSON Msg
-instance ToJSON   In
-instance FromJSON In
+import           LibDataTypes
 
 challenges :: [(String,String)]
 challenges = [ ("NOT USED", "NOT USED")

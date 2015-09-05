@@ -1,22 +1,20 @@
 {-# LANGUAGE OverloadedStrings #-}
-
+{-
+Created       : 2015 Sep 02 (Wed) 11:56:37 by Harold Carr.
+Last Modified : 2015 Sep 05 (Sat) 10:48:52 by Harold Carr.
+-}
 module LibThreepenny
-( threepennyMain
+( tpMain
 )
 where
 
-import           Control.Applicative
-import           Control.Concurrent          (forkIO)
 import           Control.Monad
 import           Data.IORef
-import           Data.Maybe
 import qualified Graphics.UI.Threepenny      as UI
 import           Graphics.UI.Threepenny.Core
-import           Network
-import           System.IO                   (hClose)
 
-threepennyMain :: Event String -> IO ()
-threepennyMain event =
+tpMain :: Event String -> IO ()
+tpMain event =
     startGUI defaultConfig $ \w -> do
         inputs <- liftIO $ newIORef []
         let

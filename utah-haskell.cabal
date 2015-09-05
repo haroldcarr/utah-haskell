@@ -15,7 +15,8 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     LibInteract
+  exposed-modules:     LibDataTypes
+                     , LibInteract
                      , LibScotty
                      , LibThreepenny
   build-depends:       base >= 4.7 && < 5

@@ -1,6 +1,6 @@
 #
 # Created       : 2015 Sep 04 (Fri) 14:46:10 by Harold Carr.
-# Last Modified : 2015 Sep 04 (Fri) 22:45:51 by Harold Carr.
+# Last Modified : 2015 Sep 05 (Sat) 10:52:53 by Harold Carr.
 #
 
 b build : FORCE
@@ -19,7 +19,11 @@ t test : FORCE
 	curl -i 127.0.0.1:3000     -X POST -d '{ "name": "H", "msg": { "txt": "foldAX", "msgId" :2 }}'
 	curl -i 127.0.0.1:3000     -X POST -d '{ "name": "H", "msg": { "txt": "foldA2", "msgId" :2 }}'
 
+h hlint : FORCE
+	hlint app/*.hs src/*.hs
+
 c clean : FORCE
+	hcRReap
 	stack clean
 
 FORCE ::
