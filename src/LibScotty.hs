@@ -12,9 +12,9 @@ import           Data.Monoid             (mconcat)
 import           Data.Text.Lazy          (unpack)
 import           Data.Text.Lazy.Encoding (decodeUtf8)
 import           GHC.Generics
+import           LibInteract             as LI
 import           Reactive.Threepenny     (Handler (..))
 import           Web.Scotty
-
 
 data User = User { userId :: Int, userName :: String } deriving (Eq, Generic, Show)
 bob       = User 1 "bob"
@@ -24,9 +24,12 @@ allUsers  = [bob, jenny]
 instance ToJSON   User
 instance FromJSON User
 
-scottyMain :: Handler String -> IO ()
-scottyMain handler = scotty 3000 $ do
+-- scottyMain :: Handler String -> IO ()
+scottyMain gu pu handler = scotty 3000 $ do
     post "/" $ do
         b <- body
-        liftIO (handler (unpack (decodeUtf8 b)))
-        json allUsers
+        let d = decodeUtf8 b
+        let msg = unpack d
+        liftIO (handler msg)
+        r <- liftIO (LI.inputS gu pu d)
+        json r

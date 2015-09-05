@@ -1,19 +1,39 @@
-module LibInteract where
+{-# LANGUAGE DeriveGeneric     #-}
+{-# LANGUAGE OverloadedStrings #-}
+
+module LibInteract
+       (
+           gp
+       , inputS
+       )
+       where
 
 import           Control.Concurrent.MVar (MVar (..), newEmptyMVar, putMVar,
                                           takeMVar)
+import           Data.Aeson              (FromJSON, ToJSON, decode)
 import qualified Data.Map                as Map
+import           Data.String.Conversions (convertString)
+import           GHC.Generics            hiding (P)
 
 {-
 Created       : 2015 Sep 02 (Wed) 11:56:37 by Harold Carr.
-Last Modified : 2015 Sep 04 (Fri) 10:30:46 by Harold Carr.
+Last Modified : 2015 Sep 04 (Fri) 17:00:12 by Harold Carr.
 -}
 
-newtype Name  = Name  String        deriving (Eq, Ord, Show)
-newtype MsgId = MsgId Int           deriving (Show)
-data    Msg   = Msg   MsgId  String deriving (Show)
-data    In    = In    Name   Msg    deriving (Show)
+newtype Name  = Name  String        deriving (Eq, Generic, Ord, Show)
+newtype MsgId = MsgId Int           deriving (Generic, Show)
+data    Msg   = Msg   MsgId  String deriving (Generic, Show)
+data    In    = In    Name   Msg    deriving (Generic, Show)
 data    User  = User  Name   MsgId  deriving (Show)
+
+instance ToJSON   Name
+instance FromJSON Name
+instance ToJSON   MsgId
+instance FromJSON MsgId
+instance ToJSON   In
+instance FromJSON In
+instance ToJSON   Msg
+instance FromJSON Msg
 
 challenges :: [(String,String)]
 challenges = [ ("foldC1","foldA1")
@@ -48,6 +68,12 @@ pu mv name user = do
     let newM = Map.insert name user m
     putMVar mv newM
     return user
+
+-- inputS :: G -> P -> String -> IO Msg
+inputS gu pu s =
+    case decode (convertString s) of
+        Nothing -> error "NO WAY"
+        (Just d) -> input gu pu d
 
 input :: G -> P -> In -> IO Msg
 input gu pu i@(In name _) = do
