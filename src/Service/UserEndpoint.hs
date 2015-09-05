@@ -3,8 +3,8 @@
 Created       : 2015 Aug 26 (Wed) 11:56:37 by Harold Carr.
 Last Modified : 2015 Sep 05 (Sat) 11:06:15 by Harold Carr.
 -}
-module Service.Scotty
-( sMain
+module Service.UserEndpoint
+( ueMain
 )
 where
 
@@ -16,8 +16,8 @@ import           Reactive.Threepenny     (Handler (..))
 import qualified Service.Interact        as I
 import           Web.Scotty
 
-sMain :: I.G -> I.P -> (String -> IO a) -> IO ()
-sMain gu pu handler = scotty 3000 $ do
+ueMain :: I.G -> I.P -> (String -> IO a) -> IO ()
+ueMain gu pu handler = scotty 3000 $ do
     post "/" $ do
         b <- body
         let d = decodeUtf8 b

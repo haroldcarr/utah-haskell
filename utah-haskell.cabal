@@ -16,9 +16,9 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     DataTypes
+                     , Service.Display
                      , Service.Interact
-                     , Service.Scotty
-                     , Service.Threepenny
+                     , Service.UserEndpoint
   build-depends:       base >= 4.7 && < 5
                      , aeson >= 0.8.0.2
                      , containers >= 0.5.5.1
