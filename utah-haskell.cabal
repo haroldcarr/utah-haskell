@@ -15,7 +15,8 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     DataTypes
+  exposed-modules:     Client
+                     , DataTypes
                      , Service.Display
                      , Service.Interact
                      , Service.UserEndpoint
@@ -29,6 +30,7 @@ library
                      , text == 1.2.0.6
                      , threepenny-gui == 0.6.0.3
                      , transformers == 0.3.0.0
+                     , wreq == 0.3.0.1
   default-language:    Haskell2010
 
 executable utah-haskell-exe
