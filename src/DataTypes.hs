@@ -2,9 +2,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-
 Created       : 2015 Aug 26 (Wed) 11:56:37 by Harold Carr.
-Last Modified : 2015 Sep 05 (Sat) 10:40:31 by Harold Carr.
+Last Modified : 2015 Sep 05 (Sat) 11:05:00 by Harold Carr.
 -}
-module LibDataTypes where
+module DataTypes where
 
 import           Data.Aeson   (FromJSON, ToJSON)
 import           GHC.Generics

@@ -1,9 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-
 Created       : 2015 Aug 26 (Wed) 11:56:37 by Harold Carr.
-Last Modified : 2015 Sep 05 (Sat) 10:51:05 by Harold Carr.
+Last Modified : 2015 Sep 05 (Sat) 11:05:30 by Harold Carr.
 -}
-module LibInteract
+module Service.Interact
        (
          G
        , P
@@ -19,7 +19,7 @@ import           Control.Concurrent.MVar (MVar (..), newEmptyMVar, putMVar,
 import           Data.Aeson              (decode)
 import qualified Data.Map                as Map
 import           Data.String.Conversions (convertString)
-import           LibDataTypes
+import           DataTypes
 
 challenges :: [(String,String)]
 challenges = [ ("NOT USED", "NOT USED")

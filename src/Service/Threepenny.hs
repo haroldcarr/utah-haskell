@@ -3,7 +3,7 @@
 Created       : 2015 Sep 02 (Wed) 11:56:37 by Harold Carr.
 Last Modified : 2015 Sep 05 (Sat) 10:48:52 by Harold Carr.
 -}
-module LibThreepenny
+module Service.Threepenny
 ( tpMain
 )
 where
