@@ -13,6 +13,7 @@ import           Data.Text.Lazy          (unpack)
 import           Data.Text.Lazy.Encoding (decodeUtf8)
 import           GHC.Generics
 import           LibInteract             as LI
+import           Network.HTTP.Types      (badRequest400, ok200)
 import           Reactive.Threepenny     (Handler (..))
 import           Web.Scotty
 
@@ -32,4 +33,13 @@ scottyMain gu pu handler = scotty 3000 $ do
         let msg = unpack d
         liftIO (handler msg)
         r <- liftIO (LI.inputS gu pu d)
+        case r of
+            Nothing  -> do status badRequest400
+                           r <- liftIO LI.mkInvalidMsgResponse
+                           json r
+            (Just r) -> do status ok200
+                           json r
+    matchAny "/:everythingElse" $ do
+        status badRequest400
+        r <- liftIO LI.mkValidMethodOrRoute
         json r

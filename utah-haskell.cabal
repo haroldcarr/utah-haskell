@@ -21,6 +21,7 @@ library
   build-depends:       base >= 4.7 && < 5
                      , aeson >= 0.8.0.2
                      , containers >= 0.5.5.1
+                     , http-types == 0.8.6
                      , network == 2.6.2.1
                      , scotty == 0.9.1
                      , string-conversions == 0.3.0.3

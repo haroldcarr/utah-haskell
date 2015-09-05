@@ -3,8 +3,10 @@
 
 module LibInteract
        (
-           gp
+         gp
        , inputS
+       , mkInvalidMsgResponse
+       , mkValidMethodOrRoute
        )
        where
 
@@ -17,7 +19,7 @@ import           GHC.Generics            hiding (P)
 
 {-
 Created       : 2015 Sep 02 (Wed) 11:56:37 by Harold Carr.
-Last Modified : 2015 Sep 04 (Fri) 21:52:41 by Harold Carr.
+Last Modified : 2015 Sep 04 (Fri) 22:39:32 by Harold Carr.
 -}
 
 type Name  = String
@@ -32,10 +34,10 @@ instance ToJSON   In
 instance FromJSON In
 
 challenges :: [(String,String)]
-challenges = [ ("dummyC0","dummyC0")
-             , ("foldC1","foldA1")
-             , ("foldC2","foldA2")
-             , ("foldC3","foldA4")
+challenges = [ ("NOT USED", "NOT USED")
+             , ("foldC1"  , "foldA1")
+             , ("foldC2"  , "foldA2")
+             , ("foldC3"  , "foldA4")
              ]
 
 challenge = ce fst
@@ -66,11 +68,10 @@ pu mv name user = do
     putMVar mv newM
     return user
 
--- inputS :: G -> P -> String -> IO Msg
 inputS gu pu s =
     case decode (convertString s) of
-        Nothing -> error ("NO WAY: " ++ (convertString s))
-        (Just d) -> input gu pu d
+        Nothing  -> return Nothing
+        (Just d) -> do r <- input gu pu d; return (Just r)
 
 input :: G -> P -> In -> IO Msg
 input gu pu i@(In name _) = do
@@ -88,6 +89,12 @@ newUser gu pu (In name _) = do
 
 mkMsg :: Int -> Msg
 mkMsg n = Msg n (challenge n)
+
+mkInvalidMsgResponse :: IO Msg
+mkInvalidMsgResponse = return $ Msg 0 "INVALID INPUT MESSAGE"
+
+mkValidMethodOrRoute :: IO Msg
+mkValidMethodOrRoute = return $ Msg 0 "INVALID HTTP METHOD OR ROUTE"
 
 existingUser :: Monad m => t -> (Name -> User -> m a) -> In -> User -> m Msg
 existingUser gu pu   (In name (Msg inId msg))    u@(User _ outId) =
