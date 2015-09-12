@@ -25,7 +25,8 @@ challenges :: [(String,String)]
 challenges = [ ("NOT USED", "NOT USED")
              , ("foldC1"  , "foldA1")
              , ("foldC2"  , "foldA2")
-             , ("foldC3"  , "foldA4")
+             , ("foldC3"  , "foldA3")
+             , ("foldC4"  , "foldA4")
              ]
 
 challenge = ce fst
@@ -61,34 +62,34 @@ inputS gu pu s =
         Nothing  -> return Nothing
         (Just d) -> do r <- input gu pu d; return (Just r)
 
-input :: G -> P -> In -> IO Msg
-input gu pu i@(In name _) = do
+input :: G -> P -> Msg -> IO Msg
+input gu pu m@(Msg name _ _) = do
     r <- gu name
     case r of
-        Nothing    -> newUser gu pu i
-        Just exist -> existingUser gu pu i exist
+        Nothing    -> newUser gu pu m
+        Just exist -> existingUser gu pu m exist
 
-newUser :: Monad m => t -> (Name -> User -> m a) -> In -> m Msg
-newUser gu pu (In name _) = do
+newUser :: Monad m => t -> (Name -> User -> m a) -> Msg -> m Msg
+newUser gu pu (Msg name _ _) = do
     let msgId = 1
     let user = User name msgId
     pu name user
-    return (mkMsg msgId)
+    return (mkMsg name msgId)
 
-mkMsg :: Int -> Msg
-mkMsg n = Msg n (challenge n)
+mkMsg :: Name -> Int -> Msg
+mkMsg name n = Msg name n (challenge n)
 
 mkInvalidMsgResponse :: IO Msg
-mkInvalidMsgResponse = return $ Msg 0 "INVALID INPUT MESSAGE"
+mkInvalidMsgResponse = return $ Msg "BAD" 0 "INVALID INPUT MESSAGE"
 
 mkValidMethodOrRoute :: IO Msg
-mkValidMethodOrRoute = return $ Msg 0 "INVALID HTTP METHOD OR ROUTE"
+mkValidMethodOrRoute = return $ Msg "BAD" 0 "INVALID HTTP METHOD OR ROUTE"
 
-existingUser :: Monad m => t -> (Name -> User -> m a) -> In -> User -> m Msg
-existingUser gu pu   (In name (Msg inId msg))    u@(User _ outId) =
+existingUser :: Monad m => t -> (Name -> User -> m a) -> Msg -> User -> m Msg
+existingUser gu pu   (Msg name inId msg)    u@(User _ outId) =
     if inId /= outId ||
        msg /= expect outId
-    then return (mkMsg outId)
+    then return (mkMsg name outId)
     else updateUser pu u
 
 updateUser :: Monad m => (Name -> User -> m a) -> User -> m Msg
@@ -96,20 +97,20 @@ updateUser pu (User name msgId) = do
     let newId = msgId + 1
     let newUser = User name newId
     pu name newUser
-    return (mkMsg newId)
+    return (mkMsg name newId)
 
 test :: IO ()
 test = do
     (gu,pu) <- gp
 --    gu (Name "Harold")
 --    pu (Name "Harold") (User (Name "Harold"))
-    one <- input gu pu (In "Harold" (Msg (-1) "my name is harold"))
-    two <- input gu pu (In "Harold" (Msg    0 "my name is harold"))
-    thr <- input gu pu (In "Harold" (Msg    0 "foldA1"))
-    fou <- input gu pu (In "Harold" (Msg    1 "bad"))
-    fiv <- input gu pu (In "Harold" (Msg    1 "foldA2"))
+    one <- input gu pu (Msg "H" (-1) "my name is h")
+    two <- input gu pu (Msg "H"    0 "my name is h")
+    thr <- input gu pu (Msg "H"    0 "foldA1")
+    fou <- input gu pu (Msg "H"    1 "bad")
+    fiv <- input gu pu (Msg "H"    1 "foldA2")
     mapM_ print [one,two,thr,fou,fiv]
 
 {-
-(decode (convertString  "{ \"name\": \"H\", \"msg\": {\"txt\":\"foldC3\",\"msgId\":2}  }")) :: (Maybe In)
+(decode (convertString  "{ \"name\": \"H\", \"msg\": {\"txt\":\"foldC3\",\"msgId\":2}  }")) :: (Maybe Msg)
 -}

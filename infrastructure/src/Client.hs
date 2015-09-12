@@ -11,11 +11,11 @@ import           Network.Wreq
 
 epAddr = "http://127.0.0.1:3000"
 
-mkMsg i t = In "H" (Msg i t)
+mkMsg = Msg "H"
 
 msgs  = [ mkMsg 0 "intro"
         , mkMsg 1 "foldA1"
         , mkMsg 2 "foldA2"
         ]
 
-test = mapM (\m -> (post epAddr (toJSON m))) msgs
+test = mapM (post epAddr . toJSON) msgs

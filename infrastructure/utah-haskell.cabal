@@ -1,10 +1,10 @@
 name:                utah-haskell
 version:             0.1.0.0
 synopsis:            Infrastructure for Utah Haskell (https://groups.google.com/forum/#!forum/utah-haskell)
-description:         Please see README.org
+description:         See README.org
 homepage:            https://github.com/haroldcarr/utah-haskell
-license:             Apache
-license-file:        LICENSE
+-- license:             Apache
+-- license-file:        LICENSE
 author:              Harold Carr
 maintainer:          harold.carr@gmail.com
 copyright:           2015 Harold Carr

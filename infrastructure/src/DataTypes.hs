@@ -11,11 +11,8 @@ import           GHC.Generics
 
 type Name  = String
 type MsgId = Int
-data Msg   = Msg { msgId :: MsgId, txt :: String } deriving (Generic, Show)
-data In    = In  { name  :: Name , msg :: Msg    } deriving (Generic, Show)
-data User  = User Name MsgId                       deriving (Show)
+data Msg   = Msg { name :: Name, msgId :: MsgId, txt :: String } deriving (Generic, Show)
+data User  = User Name MsgId
 
 instance ToJSON   Msg
 instance FromJSON Msg
-instance ToJSON   In
-instance FromJSON In
