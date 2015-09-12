@@ -1,0 +1,43 @@
+Utah Haskell : September 17, 2015 (Thursday)
+
+* themes
+
+- client-side REST using [[http://www.serpentine.com/wreq][Wreq]]
+- folds instead of explicit recursion
+  - http://learnyouahaskell.com/higher-order-functions
+    - scroll down/ search for 'Only folds and horses' (about 3/4 down)
+  - https://www.cs.nott.ac.uk/~gmh/fold.pdf
+    - sections 1 and 2
+- CIS 194 homework 1 exercises 1 and 4
+  - http://www.seas.upenn.edu/~cis194/hw/01-intro.pdf
+  - use a fold and solutions to #1 to implement #4
+
+* interaction
+
+Participants use [[http://www.serpentine.com/wreq][Wreq]] to talk to a [[https://hackage.haskell.org/package/scotty][Scotty]]-based web service we will have running.
+
+The Scotty server will be hooked up to a laptop plugged into a
+projector. It will display what participants send.
+
+The Scotty server responds by posing additional challenges to
+participants. The challenges are based on
+- getting info from Wreq responses
+- folds (from the material above)
+- CIS 194 exercises (above)
+
+Participants send (text-representations of) solutions to the challenges.
+
+Participants can also send questions.  Everything sent is displayed.
+
+'wreq' requests should be sent to
+- [[http://127.0.0.1:3000]]
+
+Example:
+
+#+begin_example
+curl -i 127.0.0.1:3000     -X POST -d '{ "name": "H", "msgId": 0, "txt": "greetings!" }'
+#+end_example
+
+* instructions
+
+TODO
