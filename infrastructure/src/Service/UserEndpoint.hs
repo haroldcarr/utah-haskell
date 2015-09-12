@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-
 Created       : 2015 Aug 26 (Wed) 11:56:37 by Harold Carr.
-Last Modified : 2015 Sep 05 (Sat) 11:06:15 by Harold Carr.
+Last Modified : 2015 Sep 12 (Sat) 12:23:28 by Harold Carr.
 -}
 module Service.UserEndpoint
 ( ueMain
@@ -18,23 +18,23 @@ import           Reactive.Threepenny     (Handler (..))
 import qualified Service.Interact        as I
 import           Web.Scotty
 
-ueMain :: I.G -> I.P -> (String -> IO a) -> IO ()
-ueMain gu pu handler = scotty 3000 $ do
+ueMain :: I.GetUser -> I.PutUser -> (String -> IO a) -> IO ()
+ueMain getUser putUser displayHandler = scotty 3000 $ do
     post "/" $ do
         b <- body
-        let d = decodeUtf8 b
+        let d   = decodeUtf8 b
         let msg = unpack d
-        liftIO (handler ("-> " ++ msg))
-        r <- liftIO (I.inputS gu pu d)
+        liftIO (displayHandler ("-> " ++ msg))
+        r <- liftIO (I.inputS getUser putUser d)
         case r of
             Nothing  -> do status badRequest400
                            r <- liftIO I.mkInvalidMsgResponse
-                           liftIO (handler ("<- " ++ (convertString (encode r))))
+                           liftIO (displayHandler ("<- " ++ (convertString (encode r))))
                            json r
             (Just r) -> do status ok200
-                           liftIO (handler ("<- " ++ (convertString (encode r))))
+                           liftIO (displayHandler ("<- " ++ (convertString (encode r))))
                            json r
     matchAny "/:everythingElse" $ do
         status badRequest400
-        r <- liftIO I.mkValidMethodOrRoute
+        r <- liftIO I.mkInvalidMethodOrRoute
         json r

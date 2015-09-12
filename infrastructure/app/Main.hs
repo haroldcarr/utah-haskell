@@ -1,7 +1,7 @@
 module Main where
 {-
 Created       : 2015 Aug 26 (Wed) 11:56:37 by Harold Carr.
-Last Modified : 2015 Sep 12 (Sat) 11:37:55 by Harold Carr.
+Last Modified : 2015 Sep 12 (Sat) 12:18:57 by Harold Carr.
 -}
 import           Control.Concurrent      (forkIO)
 import           Reactive.Threepenny     (newEvent)
@@ -11,7 +11,7 @@ import qualified Service.UserEndpoint    as U
 
 main :: IO ()
 main = do
-    (gu, pu) <- I.gp
-    (event, handler) <- newEvent
-    forkIO (U.ueMain gu pu handler)
+    (getUser, putUser) <- I.getUserPutUser
+    (event, handler)   <- newEvent
+    forkIO (U.ueMain getUser putUser handler)
     D.dMain event
