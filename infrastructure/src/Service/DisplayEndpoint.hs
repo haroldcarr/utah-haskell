@@ -1,14 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-
 Created       : 2015 Sep 02 (Wed) 11:56:37 by Harold Carr.
-Last Modified : 2015 Sep 05 (Sat) 10:48:52 by Harold Carr.
+Last Modified : 2015 Sep 12 (Sat) 11:41:42 by Harold Carr.
 -}
-module Service.Display
+module Service.DisplayEndpoint
 ( dMain
 )
 where
 
-import           Control.Monad
+import           Control.Monad               (void)
 import           Data.IORef
 import qualified Graphics.UI.Threepenny      as UI
 import           Graphics.UI.Threepenny.Core

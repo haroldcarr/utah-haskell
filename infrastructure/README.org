@@ -1,32 +1,5 @@
 Utah Haskell Infrastructure
 
-* September 17, 2015 (Thursday)
-
-Themes
-
-- client-side REST using [[http://www.serpentine.com/wreq][Wreq]]
-- folds instead of explicit recursion
-  - http://learnyouahaskell.com/higher-order-functions
-    - scroll down/ search for 'Only folds and horses' (about 3/4 down)
-  - https://www.cs.nott.ac.uk/~gmh/fold.pdf
-    - sections 1 and 2
-- CIS 194 homework 1 exercises 1 and 4
-  - http://www.seas.upenn.edu/~cis194/hw/01-intro.pdf
-  - use a fold and solutions to #1 to implement #4
-
-* interaction
-
-Participants use [[http://www.serpentine.com/wreq][Wreq]] to talk to a [[https://hackage.haskell.org/package/scotty][Scotty]]-based web service we will have running.
-
-The Scotty server will be hooked up to a laptop plugged into a
-projects. It will display what participants send.
-
-The Scotty server responds by posing additional challenges to
-participants.  Participants can send (text-representations of)
-solutions to the challenges and/or can send solutions to the CIS 194.
-
-Participants can also send questions.  Everything sent is displayed.
-
 * scotty infrastructure
 
 #+begin_example
@@ -45,19 +18,3 @@ The above:
   - this is where 'wreq' requests should be sent
 - starts threepenny-gui at [[http://127.0.0.1:8023]]
   - the browser connects here
-
-Then send requests:
-
-#+begin_example
-curl http://127.0.0.1:3000/users
-curl http://127.0.0.1:3000/users/1
-curl -X POST http://127.0.0.1:3000/reg?email=foo
-curl http://127.0.0.1:3000/JUNK
-#+end_example
-
-Besides seeing the CURL responses, the browser will display the requests.
-
-* still TODO
-
-- a "real" threepenny display pane that scrolls (so it shows/keeps all history)
-- prepare scotty for the specific assignment (I'm thinking about FOLD exercises)
