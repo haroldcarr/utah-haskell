@@ -41,3 +41,42 @@ curl -i 127.0.0.1:3000     -X POST -d '{ "name": "H", "msgId": 0, "txt": "greeti
 * instructions
 
 TODO
+
+:set -XOverloadedStrings
+import Control.Lens
+import Network.Wreq
+import Data.Aeson (decode, toJSON)
+import Data.Aeson.Lens (key)
+
+let out = toJSON (Msg "Me" 0 "intro")
+resp <- post "http://127.0.0.1:3000" out
+resp
+
+resp ^. responseHeader "Content-Type"
+"application/json; charset=utf-8"
+
+resp ^. responseHeader "Server"
+"Warp/3.0.13.1"
+
+resp ^? responseBody
+resp ^? responseBody . key "msgId"
+resp ^? responseBody . key "name"
+resp ^? responseBody . key "txt"
+
+let (Just m)   = resp ^? responseBody
+let (Just msg) = (decode m) :: (Maybe Msg)
+
+let sum'     = foldr (+) 0
+let product' = foldr (*) 1
+let concat'  = foldr (++) []
+let length'  = foldl (const . succ) 0
+
+let ints = [1::Int .. 9]
+sum      ints
+sum'     ints
+product  ints
+product' ints
+concat  [ints, ints]
+concat' [ints, ints]
+length   ints
+length'  ints
