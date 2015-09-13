@@ -1,14 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-
 Created       : 2015 Aug 26 (Wed) 11:56:37 by Harold Carr.
-Last Modified : 2015 Sep 12 (Sat) 12:21:40 by Harold Carr.
+Last Modified : 2015 Sep 13 (Sun) 09:48:35 by Harold Carr.
 -}
 module Service.Interact
        (
          GetUser
        , PutUser
        , getUserPutUser
-       , inputS
+       , input
        , mkInvalidMethodOrRoute
        , mkInvalidMsgResponse
        )
@@ -58,16 +58,11 @@ putUser mv name user = do
     putMVar mv newM
     return user
 
-inputS getUser putUser s =
-    case decode (convertString s) of
-        Nothing  -> return Nothing
-        (Just d) -> do r <- input getUser putUser d; return (Just r)
-
 input :: GetUser -> PutUser -> Msg -> IO Msg
 input getUser putUser m@(Msg name _ _) = do
     r <- getUser name
     case r of
-        Nothing    -> newUser getUser putUser m
+        Nothing    -> newUser      getUser putUser m
         Just exist -> existingUser getUser putUser m exist
 
 newUser :: Monad m => t -> (Name -> User -> m a) -> Msg -> m Msg
@@ -76,15 +71,6 @@ newUser getUser putUser (Msg name _ _) = do
     let user  = User name msgId
     putUser name user
     return (mkMsg name msgId)
-
-mkMsg :: Name -> Int -> Msg
-mkMsg name n = Msg name n (challenge n)
-
-mkInvalidMsgResponse :: IO Msg
-mkInvalidMsgResponse = return $ Msg "BAD" 0 "INVALID INPUT MESSAGE"
-
-mkInvalidMethodOrRoute :: IO Msg
-mkInvalidMethodOrRoute = return $ Msg "BAD" 0 "INVALID HTTP METHOD OR ROUTE"
 
 existingUser :: Monad m => t -> (Name -> User -> m a) -> Msg -> User -> m Msg
 existingUser getUser putUser   (Msg name inId msg)    u@(User _ outId) =
@@ -99,6 +85,18 @@ updateUser putUser (User name msgId) = do
     let newUser = User name newId
     putUser name newUser
     return (mkMsg name newId)
+
+mkMsg :: Name -> Int -> Msg
+mkMsg name n = Msg name n (challenge n)
+
+mkInvalidMsgResponse   :: IO Msg
+mkInvalidMsgResponse   = mkInvalidResponse "INVALID INPUT MESSAGE"
+
+mkInvalidMethodOrRoute :: IO Msg
+mkInvalidMethodOrRoute = mkInvalidResponse "INVALID HTTP METHOD OR ROUTE"
+
+mkInvalidResponse      :: String -> IO Msg
+mkInvalidResponse      = return . Msg "BAD" 0
 
 test :: IO ()
 test = do
