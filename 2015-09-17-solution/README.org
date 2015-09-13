@@ -14,13 +14,13 @@ Utah Haskell : September 17, 2015 (Thursday)
 
 * interaction
 
-Participants use [[http://www.serpentine.com/wreq][Wreq]] to talk to a [[https://hackage.haskell.org/package/scotty][Scotty]]-based web service we will have running.
+Participants use [[http://www.serpentine.com/wreq][Wreq]] to send messages to a web service we will have running.
 
-The Scotty server will be hooked up to a laptop plugged into a
-projector. It will display what participants send.
+The service will be running on a laptop plugged into a projector. It
+will display what participants send.
 
-The Scotty server responds by posing additional challenges to
-participants. The challenges are based on
+The service responds to participant's messages by posing challenges.
+The challenges are based on
 - getting info from Wreq responses
 - folds (from the material above)
 - CIS 194 exercises (above)
@@ -47,24 +47,18 @@ import Control.Lens
 import Network.Wreq
 import Data.Aeson (decode, toJSON)
 import Data.Aeson.Lens (key)
+import Data.Maybe (fromJust);
 
 let out = toJSON (Msg "Me" 0 "intro")
-resp <- post "http://127.0.0.1:3000" out
-resp
+r <- post "http://127.0.0.1:3000" out
+r ^? responseBody
+r ^? responseBody . key "name"
+r ^? responseBody . key "txt"
 
-resp ^. responseHeader "Content-Type"
-"application/json; charset=utf-8"
-
-resp ^. responseHeader "Server"
-"Warp/3.0.13.1"
-
-resp ^? responseBody
-resp ^? responseBody . key "msgId"
-resp ^? responseBody . key "name"
-resp ^? responseBody . key "txt"
-
-let (Just m)   = resp ^? responseBody
+let (Just m)   = r ^? responseBody
 let (Just msg) = (decode m) :: (Maybe Msg)
+
+msgId (fromJust (decode (fromJust (r ^? responseBody)) :: Maybe Msg))
 
 let sum'     = foldr (+) 0
 let product' = foldr (*) 1
