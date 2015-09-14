@@ -1,0 +1,6 @@
+Utah Haskell
+
+For the Thursday, September 17, 2015 meeting, see:
+
+- [[./2015-09-17-template/README.org]]
+
