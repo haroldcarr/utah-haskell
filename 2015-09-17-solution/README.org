@@ -10,7 +10,7 @@ Utah Haskell : September 17, 2015 (Thursday)
     - sections 1 and 2
 - CIS 194 homework 1 exercises 1 and 4
   - http://www.seas.upenn.edu/~cis194/hw/01-intro.pdf
-  - use a fold and solutions to #1 to implement #4
+  - use solutions to exercise 1 and a fold to implement exercise 4
 
 * interaction
 
@@ -40,37 +40,120 @@ curl -i 127.0.0.1:3000     -X POST -d '{ "name": "H", "msgId": 0, "txt": "greeti
 
 * instructions
 
-TODO
+** clone repo
 
+#+BEGIN_EXAMPLE
+git clone git@github.com:haroldcarr/utah-haskell.git
+#+END_EXAMPLE
+
+Suggest: *only* look at =2015-09-17-template= (the other directories contain answers).
+
+** download dependencies
+
+This assumes you have [[https://github.com/commercialhaskell/stack][stack]] installed (as shown in our first meeting: [[http://seanhess.github.io/2015/08/04/practical-haskell-getting-started.html][getting started with stack]])
+
+#+BEGIN_EXAMPLE
+# go to directory that was cloned
+cd utah-haskell
+
+# go to this meeting's project
+cd 2015-09-17-template
+
+# build the template (this causes dependencies to be downloaded)
+stack build
+#+END_EXAMPLE
+
+** OPTIONAL : build/run the service
+
+Do this if you want to experiment in advance of the meeting.
+For the meeting we will have this service running.
+
+#+BEGIN_EXAMPLE
+# go to directory that was cloned
+cd utah-haskell
+
+# service location
+cd infrastructure
+
+# build the service (and download dependencies)
+stack build
+
+# run the service
+stack exec utah-haskell-exe &
+#+END_EXAMPLE
+
+The service receives requests at [[http://127.0.0.1:3000]]
+
+The service displays (i.e., point your browser to) request/responses at [[http://127.0.0.1:8023]]
+
+** communicate with the service
+
+*** via curl
+
+#+begin_example
+curl -i 127.0.0.1:3000     -X POST -d '{ "name": "H", "msgId": 0, "txt": "greetings!" }'
+#+end_example
+
+*** via ghci
+
+*This is where the exercise /really/ begins.*
+
+Start ghci:
+
+#+BEGIN_EXAMPLE
+cd utah-haskell
+cd 2015-09-17-template
+stack ghci
+#+END_EXAMPLE
+
+Enter the following into ghci:
+
+#+BEGIN_EXAMPLE
 :set -XOverloadedStrings
 import Control.Lens
 import Network.Wreq
 import Data.Aeson (decode, toJSON)
 import Data.Aeson.Lens (key)
 import Data.Maybe (fromJust);
+#+END_EXAMPLE
 
-let out = toJSON (Msg "Me" 0 "intro")
-r <- post "http://127.0.0.1:3000" out
+Now you can send messages to the services.
+
+In ghci, instances of =Msg= are created via:
+
+#+BEGIN_EXAMPLE
+let msg = Msg "Your Name" 0 "some message text"
+#+END_EXAMPLE
+
+In ghci, a haskell representation of JSON is created via:
+
+#+BEGIN_EXAMPLE
+let jsn = toJSON msg
+#+END_EXAMPLE
+
+Messages to the service can be sent (and responses captured) via:
+
+#+BEGIN_EXAMPLE
+r <- post "http://127.0.0.1:3000" jsn
+#+END_EXAMPLE
+
+You can examine the response using techniques shown in the Wreq tutorial:
+
+#+BEGIN_EXAMPLE
 r ^? responseBody
-r ^? responseBody . key "name"
 r ^? responseBody . key "txt"
 
 let (Just m)   = r ^? responseBody
 let (Just msg) = (decode m) :: (Maybe Msg)
+#+END_EXAMPLE
 
-msgId (fromJust (decode (fromJust (r ^? responseBody)) :: Maybe Msg))
+The =txt= field in the service response will contain a "challenge"
+- enter that challenge into ghci
+- grab ghci's response
+- create a =Msg=
+  - with the same =msgId= as the challenge =msgId=
+  - with ghci's response as the =txt= field
+- send that =Msg= to the service
+  - if your answer is correct the service will issue a new challenge
+  - else it will issue the same challenge again
 
-let sum'     = foldr (+) 0
-let product' = foldr (*) 1
-let concat'  = foldr (++) []
-let length'  = foldl (const . succ) 0
-
-let ints = [1::Int .. 9]
-sum      ints
-sum'     ints
-product  ints
-product' ints
-concat  [ints, ints]
-concat' [ints, ints]
-length   ints
-length'  ints
