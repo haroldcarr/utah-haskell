@@ -61,6 +61,7 @@ cd utah-haskell
 cd 2015-09-17-template
 
 # build the template (this causes dependencies to be downloaded)
+stack setup
 stack build
 #+END_EXAMPLE
 
@@ -77,6 +78,7 @@ cd utah-haskell
 cd infrastructure
 
 # build the service (and download dependencies)
+stack setup
 stack build
 
 # run the service
