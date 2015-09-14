@@ -95,6 +95,8 @@ The service displays (i.e., point your browser to) request/responses at [[http:/
 curl -i 127.0.0.1:3000     -X POST -d '{ "name": "H", "msgId": 0, "txt": "greetings!" }'
 #+end_example
 
+Note: the response =txt= field contains Haskell code.  See the "challenges" section below for more info.
+
 *** via ghci
 
 *This is where the exercise /really/ begins.*
@@ -111,11 +113,6 @@ Enter the following into ghci:
 
 #+BEGIN_EXAMPLE
 :set -XOverloadedStrings
-import Control.Lens
-import Network.Wreq
-import Data.Aeson (decode, toJSON)
-import Data.Aeson.Lens (key)
-import Data.Maybe (fromJust)
 #+END_EXAMPLE
 
 Now you can send messages to the services.
@@ -148,10 +145,23 @@ let (Just m)   = r ^? responseBody
 let (Just inMsg) = (decode m) :: (Maybe Msg)
 #+END_EXAMPLE
 
-The =txt= field in the service response will contain a "challenge"
+** challenges
+
+You first message should contain:
+- a =name= field that contains your unique name (perhaps your email address)
+- a =msgId= field that can contain any integer (it is ignored on the first message)
+- a =txt= field that can contain any string (it is ignored on the first message)
+
+The service will respond with a message that contains:
+- a =name= field that echos what your sent
+- a =msgId= field that you should use on your next message
+- a =txt= field that contains code you should run in ghci
+
+The service response =txt= field is a "challenge"
 - enter that challenge into ghci
 - grab ghci's response
 - create a =Msg=
+  - with your same =name= field
   - with the same =msgId= as the challenge =msgId=
   - with ghci's response as the =txt= field
 - send that =Msg= to the service

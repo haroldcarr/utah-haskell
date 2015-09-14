@@ -19,15 +19,15 @@ library
                      , Service.DisplayEndpoint
                      , Service.Interact
                      , Service.UserEndpoint
-  build-depends:       base >= 4.7 && < 5
-                     , aeson >= 0.8.0.2
-                     , containers >= 0.5.5.1
-                     , http-types == 0.8.6
-                     , scotty == 0.9.1
-                     , string-conversions == 0.3.0.3
-                     , text == 1.2.0.6
-                     , threepenny-gui == 0.6.0.3
-                     , transformers == 0.3.0.0
+  build-depends:       base
+                     , aeson
+                     , containers
+                     , http-types
+                     , scotty
+                     , string-conversions
+                     , text
+                     , threepenny-gui
+                     , transformers
   default-language:    Haskell2010
 
 executable utah-haskell-exe

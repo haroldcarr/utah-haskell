@@ -16,11 +16,11 @@ cabal-version:       >=1.10
 library
   exposed-modules:     Client
                      , Msg
-  build-depends:       aeson >= 0.8.0.2
-                     , base >= 4.7 && < 5
-                     , containers >= 0.5.5.1
+  build-depends:       aeson
+                     , base
+                     , containers
                      , lens
-                     , lens-aeson >= 1.0.0.4
-                     , network == 2.6.2.1
-                     , wreq == 0.3.0.1
+                     , lens-aeson
+                     , network
+                     , wreq
   default-language:    Haskell2010
