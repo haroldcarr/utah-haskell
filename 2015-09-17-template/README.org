@@ -62,6 +62,9 @@ cd 2015-09-17-template
 
 # build the template (this causes dependencies to be downloaded)
 stack build
+
+# if experiencing from GHC version mismatch error, please do: stack setup
+# this may take a while... after it completes, continue with: stack build
 #+END_EXAMPLE
 
 ** OPTIONAL : build/run the service
