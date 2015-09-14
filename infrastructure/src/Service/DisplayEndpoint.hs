@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-
 Created       : 2015 Sep 02 (Wed) 11:56:37 by Harold Carr.
-Last Modified : 2015 Sep 12 (Sat) 11:41:42 by Harold Carr.
+Last Modified : 2015 Sep 13 (Sun) 19:23:26 by Harold Carr.
 -}
 module Service.DisplayEndpoint
 ( dMain
@@ -28,9 +28,8 @@ dMain event =
 
             addInput :: String -> UI ()
             addInput str = do
-                elInput <- UI.input # set value str
-                                    # set style [("width","800px")]
-                liftIO $ modifyIORef inputs (elInput:)
+                eInput <- UI.string str
+                liftIO $ modifyIORef inputs (eInput:)
 
             addInputRedoLayout str = do
                 addInput str
