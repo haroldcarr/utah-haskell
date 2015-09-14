@@ -31,6 +31,7 @@ Participants can also send questions.  Everything sent is displayed.
 
 'wreq' requests should be sent to
 - [[http://127.0.0.1:3000]]
+- note: the localhost address will be replaced in the meeting
 
 Example:
 
@@ -114,7 +115,7 @@ import Control.Lens
 import Network.Wreq
 import Data.Aeson (decode, toJSON)
 import Data.Aeson.Lens (key)
-import Data.Maybe (fromJust);
+import Data.Maybe (fromJust)
 #+END_EXAMPLE
 
 Now you can send messages to the services.
@@ -122,29 +123,29 @@ Now you can send messages to the services.
 In ghci, instances of =Msg= are created via:
 
 #+BEGIN_EXAMPLE
-let msg = Msg "Your Name" 0 "some message text"
+let outMsg = Msg "Your Name" 0 "some message text"
 #+END_EXAMPLE
 
 In ghci, a haskell representation of JSON is created via:
 
 #+BEGIN_EXAMPLE
-let jsn = toJSON msg
+let jsn = toJSON outMsg
 #+END_EXAMPLE
 
-Messages to the service can be sent (and responses captured) via:
+Messages to the service can be sent (and responses captured in =r=) via:
 
 #+BEGIN_EXAMPLE
 r <- post "http://127.0.0.1:3000" jsn
 #+END_EXAMPLE
 
-You can examine the response using techniques shown in the Wreq tutorial:
+The response can be examined using techniques shown in the Wreq tutorial:
 
 #+BEGIN_EXAMPLE
 r ^? responseBody
 r ^? responseBody . key "txt"
 
 let (Just m)   = r ^? responseBody
-let (Just msg) = (decode m) :: (Maybe Msg)
+let (Just inMsg) = (decode m) :: (Maybe Msg)
 #+END_EXAMPLE
 
 The =txt= field in the service response will contain a "challenge"
@@ -157,3 +158,4 @@ The =txt= field in the service response will contain a "challenge"
   - if your answer is correct the service will issue a new challenge
   - else it will issue the same challenge again
 
+Note: remember to (un)escape string quotes where appropriate.
