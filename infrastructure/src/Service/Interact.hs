@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-
 Created       : 2015 Aug 26 (Wed) 11:56:37 by Harold Carr.
-Last Modified : 2015 Sep 15 (Tue) 07:11:53 by Harold Carr.
+Last Modified : 2015 Sep 15 (Tue) 08:04:22 by Harold Carr.
 -}
 module Service.Interact
        (
@@ -11,6 +11,8 @@ module Service.Interact
        , input
        , mkInvalidMethodOrRoute
        , mkInvalidMsgResponse
+       , showInput
+       , showOutput
        )
        where
 
@@ -47,6 +49,13 @@ challenges = [ ("NOT USED", "NOT USED")
 challenge = ce fst
 expect    = ce snd
 ce f n = f (challenges!!n)
+
+numChallenges = length challenges - 1
+
+score m = show (msgId m) ++ "/" ++ show numChallenges
+
+showInput  m = "-> name:" ++ name m ++ ", id:"    ++ show (msgId m)
+showOutput m = "<- name:" ++ name m ++ ", score:" ++ show (score m) ++ ", challenge: " ++ txt m
 
 type GetUser = Name ->         IO (Maybe User)
 type PutUser = Name -> User -> IO        User
