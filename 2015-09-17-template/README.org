@@ -216,7 +216,7 @@ ignores the value of the list elements and keeps a counter:
 
 #+BEGIN_SRC haskell
 lengthR []     = 0
-lengthR (x:xs) = 1 + (lengthR xs)
+lengthR (_:xs) = 1 + (lengthR xs)
 #+END_SRC
 
 This can also be expressed as a fold:
