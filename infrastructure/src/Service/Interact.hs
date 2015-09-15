@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-
 Created       : 2015 Aug 26 (Wed) 11:56:37 by Harold Carr.
-Last Modified : 2015 Sep 15 (Tue) 08:04:22 by Harold Carr.
+Last Modified : 2015 Sep 15 (Tue) 10:05:54 by Harold Carr.
 -}
 module Service.Interact
        (
@@ -27,7 +27,7 @@ data User  = User Name MsgId
 
 challenges :: [(String,String)]
 challenges = [ ("NOT USED", "NOT USED")
-             , ("r ^. responseHeader \"Content-Type\""  , "\"application/json; charset=utf-8\"")
+             , ("r ^. responseHeader \"Content-Type\""  , "application/json; charset=utf-8")
              , ("r ^. responseStatus . statusCode"      , "200")
              , ("r ^? responseBody . key \"msgId\""     , "Just (Number 3.0)")
              , ("msgId (fromJust (decode (fromJust (r ^? responseBody)) :: Maybe Msg))"
