@@ -94,7 +94,7 @@ The service displays (i.e., point your browser to) request/responses at [[http:/
 *** via curl
 
 #+begin_example
-curl -i 127.0.0.1:3000     -X POST -d '{ "name": "H", "msgId": 0, "txt": "greetings!" }'
+curl -i 127.0.0.1:8023     -X POST -d '{ "name": "H", "msgId": 0, "txt": "greetings!" }'
 #+end_example
 
 Note: the response =txt= field contains Haskell code.  See the "challenges" section below for more info.
@@ -134,7 +134,7 @@ let jsn = toJSON outMsg
 Messages to the service can be sent (and responses captured in =r=) via:
 
 #+BEGIN_EXAMPLE
-r <- post "http://127.0.0.1:3000" jsn
+r <- post "http://127.0.0.1:8023" jsn
 #+END_EXAMPLE
 
 The response can be examined using techniques shown in the Wreq tutorial:
