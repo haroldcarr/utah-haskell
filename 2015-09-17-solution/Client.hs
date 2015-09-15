@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-
 Created       : 2015 Sep 05 (Sat) 11:05:00 by Harold Carr.
-Last Modified : 2015 Sep 13 (Sun) 16:52:43 by Harold Carr.
+Last Modified : 2015 Sep 15 (Tue) 07:13:28 by Harold Carr.
 -}
 module Client where
 
@@ -15,10 +15,10 @@ epAddr = "http://127.0.0.1:3000"
 mkMsg = Msg "H"
 
 msgs  = [ mkMsg  0 "hello"
-        , mkMsg  1 "Just \"application/json; charset=utf-8\""
-        , mkMsg 19 "Just \"Warp/3.0.13.1\""  -- wrong id, right answer
-        , mkMsg  2 "WRONG ANSWER"            -- right id, wrong answer
-        , mkMsg  2 "Just \"Warp/3.0.13.1\""
+        , mkMsg  1 "\"application/json; charset=utf-8\""
+        , mkMsg 19 "200"                    -- wrong id, right answer
+        , mkMsg  2 "WRONG ANSWER"           -- right id, wrong answer
+        , mkMsg  2 "200"
         , mkMsg  3 "Just (Number 3.0)"
         , mkMsg  4 "4"
         , mkMsg  5 "15"
