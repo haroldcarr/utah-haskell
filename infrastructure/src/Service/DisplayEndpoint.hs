@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-
 Created       : 2015 Sep 02 (Wed) 11:56:37 by Harold Carr.
-Last Modified : 2015 Sep 13 (Sun) 19:23:26 by Harold Carr.
+Last Modified : 2015 Sep 16 (Wed) 08:26:42 by Harold Carr.
 -}
 module Service.DisplayEndpoint
 ( dMain
@@ -29,7 +29,10 @@ dMain event =
             addInput :: String -> UI ()
             addInput str = do
                 eInput <- UI.string str
-                liftIO $ modifyIORef inputs (eInput:)
+                history <- liftIO $ readIORef inputs
+                liftIO (if length history > 10
+                        then writeIORef  inputs (eInput : take 10 history)
+                        else modifyIORef inputs (eInput :))
 
             addInputRedoLayout str = do
                 addInput str
