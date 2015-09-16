@@ -1,6 +1,6 @@
 #
 # Created       : 2015 Sep 04 (Fri) 14:46:10 by Harold Carr.
-# Last Modified : 2015 Sep 12 (Sat) 12:01:16 by Harold Carr.
+# Last Modified : 2015 Sep 15 (Tue) 20:54:18 by Harold Carr.
 #
 
 b build : FORCE
@@ -20,7 +20,7 @@ t test : FORCE
 	curl -i 127.0.0.1:3000     -X POST -d '{ "name": "H", "msgId": 2, "txt": "foldA2" }'
 
 h hlint : FORCE
-	hlint app/*.hs src/*.hs
+	~/Library/Haskell/bin/hlint app/*.hs src/*.hs
 
 c clean : FORCE
 	hcRReap

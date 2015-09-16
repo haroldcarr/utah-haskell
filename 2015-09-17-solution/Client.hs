@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-
 Created       : 2015 Sep 05 (Sat) 11:05:00 by Harold Carr.
-Last Modified : 2015 Sep 15 (Tue) 07:13:28 by Harold Carr.
+Last Modified : 2015 Sep 15 (Tue) 20:59:30 by Harold Carr.
 -}
 module Client where
 
@@ -10,12 +10,15 @@ import           Data.Aeson   (toJSON)
 import           Msg
 import           Network.Wreq
 
+epAddr :: String
 epAddr = "http://127.0.0.1:3000"
 
+mkMsg :: MsgId -> String -> Msg
 mkMsg = Msg "H"
 
+msgs :: [Msg]
 msgs  = [ mkMsg  0 "hello"
-        , mkMsg  1 "\"application/json; charset=utf-8\""
+        , mkMsg  1 "application/json; charset=utf-8"
         , mkMsg 19 "200"                    -- wrong id, right answer
         , mkMsg  2 "WRONG ANSWER"           -- right id, wrong answer
         , mkMsg  2 "200"
@@ -36,6 +39,7 @@ msgs  = [ mkMsg  0 "hello"
         , mkMsg 25 "whatever"
         ]
 
+test :: IO ()
 test = do
     rs <- mapM (post epAddr . toJSON) msgs
     mapM_ (\(m, r) -> do putStrLn $ "--> " ++ show m
