@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-
 Created       : 2015 Aug 26 (Wed) 11:56:37 by Harold Carr.
-Last Modified : 2015 Sep 16 (Wed) 22:03:20 by Harold Carr.
+Last Modified : 2015 Sep 17 (Thu) 15:44:26 by Harold Carr.
 -}
 module Service.UserEndpoint
 ( ueMain
@@ -38,6 +38,11 @@ ueMain getUser putUser displayHandler adminHandler = scotty 3000 $ do
         id <- param "id"
         liftIO (adminHandler ((read id) :: Int))
         status ok200
+
+    matchAny "/invalid-ok200" $ do
+        status ok200
+        r <- liftIO I.mkInvalidMethodOrRoute
+        json r
 
     matchAny "/:everythingElse" $ do
         status badRequest400

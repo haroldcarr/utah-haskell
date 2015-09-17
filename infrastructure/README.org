@@ -22,3 +22,16 @@ The above:
 To control the number of lines shown:
 - curl 127.0.0.1:3000/dGVzdDp1c2Vy/10
   - where '10' is number of lines
+
+* CIS 194 solutions
+
+#+BEGIN_SRC haskell
+lastDigit :: Integer -> Integer
+lastDigit = (`mod` 10)
+
+dropLastDigit :: Integer -> Integer
+dropLastDigit = (`div` 10)
+
+sumDigits :: [Integer] -> Integer
+sumDigits = foldr (\x acc -> dropLastDigit x + lastDigit x + acc) 0
+#+END_SRC

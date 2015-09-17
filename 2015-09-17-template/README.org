@@ -172,6 +172,38 @@ The service response =txt= field is a "challenge"
 
 Note: remember to (un)escape string quotes where appropriate.
 
+* wreq
+
+#+BEGIN_EXAMPLE
+stack ghci
+#+END_EXAMPLE
+
+#+BEGIN_SRC haskell
+:set -XOverloadedStrings
+
+import Network.Wreq
+r <- get "http://127.0.0.1:3000"
+r <- get "http://127.0.0.1:3000/invalid-ok200"
+
+import Control.Lens
+r ^. responseHeader "Content-Type"
+r ^. responseBody
+#+END_SRC
+
+* aeson
+
+#+BEGIN_SRC haskell
+:set -XOverloadedStrings
+import Client
+import Data.Aeson
+
+let m = "{\"msgId\":0,\"name\":\"BAD\",\"txt\":\"INVALID HTTP METHOD OR ROUTE\"}"
+let (Just msg) = (decode m):: Maybe Msg
+m == encode msg
+
+let tj = toJSON msg
+#+END_SRC haskell
+
 * folds
 
 Note the pattern in:
@@ -247,3 +279,26 @@ Which is visualized (along with the previous examples) as =1+= :
         3   0                 True  True                _    0
 #+END_EXAMPLE
 
+* CIS 194 homework 1 exercise 1 and 4
+
+#+BEGIN_EXAMPLE
+lastDigit :: Integer -> Integer
+dropLastDigit :: Integer -> Integer
+
+lastDigit     123 ==  3
+lastDigit       0 ==  0
+dropLastDigit 123 == 12
+dropLastDigit   5 ==  0
+#+END_EXAMPLE
+
+* CIS 194 homework 1 exercise 4
+
+Use =lastDigit= and =dropLastDigit= and =foldr= to implement:
+
+#+BEGIN_EXAMPLE
+-- given list of single and double digit numbers
+-- returns a total of the digits
+sumDigits :: [Integer] -> Integer
+
+[10, 5, 18, 4] == 1 + 0 + 5 + 1 + 8 + 4 == 19
+#+END_EXAMPLE
