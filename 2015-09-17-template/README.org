@@ -281,8 +281,10 @@ Which is visualized (along with the previous examples) as =1+= :
 
 * CIS 194 homework 1 exercise 1 and 4
 
+Implement:
+
 #+BEGIN_EXAMPLE
-lastDigit :: Integer -> Integer
+lastDigit     :: Integer -> Integer
 dropLastDigit :: Integer -> Integer
 
 lastDigit     123 ==  3
