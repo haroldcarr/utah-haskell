@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-
 Created       : 2015 Sep 02 (Wed) 11:56:37 by Harold Carr.
-Last Modified : 2015 Sep 16 (Wed) 08:26:42 by Harold Carr.
+Last Modified : 2015 Sep 16 (Wed) 22:02:19 by Harold Carr.
 -}
 module Service.DisplayEndpoint
 ( dMain
@@ -13,14 +13,16 @@ import           Data.IORef
 import qualified Graphics.UI.Threepenny      as UI
 import           Graphics.UI.Threepenny.Core
 
-dMain :: Event String -> IO ()
-dMain event =
+dMain :: Event String -> Event Int -> IO ()
+dMain msgEvent adminEvent =
     startGUI defaultConfig $ \w -> do
         inputs <- liftIO $ newIORef []
+        size   <- liftIO $ newIORef 10
         let
             redoLayout :: UI ()
             redoLayout = void $ do
-                layout <- mkLayout =<< liftIO (readIORef inputs)
+                n      <- liftIO (readIORef size)
+                layout <- mkLayout . take n =<< liftIO (readIORef inputs)
                 getBody w # set children [layout]
 
             mkLayout :: [Element] -> UI Element
@@ -28,16 +30,18 @@ dMain event =
 
             addInput :: String -> UI ()
             addInput str = do
-                eInput <- UI.string str
-                history <- liftIO $ readIORef inputs
-                liftIO (if length history > 10
-                        then writeIORef  inputs (eInput : take 10 history)
-                        else modifyIORef inputs (eInput :))
+                eInput  <- UI.string str
+                liftIO $ modifyIORef inputs (eInput :)
 
             addInputRedoLayout str = do
                 addInput str
                 redoLayout
 
-        onEvent event addInputRedoLayout
+            changeSizeRedoLayout n = do
+                liftIO $ writeIORef size n
+                redoLayout
+
+        onEvent msgEvent addInputRedoLayout
+        onEvent adminEvent changeSizeRedoLayout
         addInputRedoLayout "Hello Utah Haskell"
 

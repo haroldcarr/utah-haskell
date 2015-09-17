@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-
 Created       : 2015 Aug 26 (Wed) 11:56:37 by Harold Carr.
-Last Modified : 2015 Sep 15 (Tue) 20:36:56 by Harold Carr.
+Last Modified : 2015 Sep 16 (Wed) 22:03:20 by Harold Carr.
 -}
 module Service.UserEndpoint
 ( ueMain
@@ -17,8 +17,8 @@ import           Network.HTTP.Types      (badRequest400, ok200)
 import qualified Service.Interact        as I
 import           Web.Scotty
 
-ueMain :: I.GetUser -> I.PutUser -> (String -> IO a) -> IO ()
-ueMain getUser putUser displayHandler = scotty 3000 $ do
+ueMain :: I.GetUser -> I.PutUser -> (String -> IO a) -> (Int -> IO a) -> IO ()
+ueMain getUser putUser displayHandler adminHandler = scotty 3000 $ do
     post "/" $ do
         b <- body
         let d   = decodeUtf8 b
@@ -33,6 +33,11 @@ ueMain getUser putUser displayHandler = scotty 3000 $ do
                            status ok200
                            liftIO (displayHandler (I.showOutput r))
                            json r
+
+    matchAny "/dGVzdDp1c2Vy/:id" $ do
+        id <- param "id"
+        liftIO (adminHandler ((read id) :: Int))
+        status ok200
 
     matchAny "/:everythingElse" $ do
         status badRequest400
