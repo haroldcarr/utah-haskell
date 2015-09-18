@@ -47,7 +47,7 @@ curl -i 127.0.0.1:3000     -X POST -d '{ "name": "H", "msgId": 0, "txt": "greeti
 git clone git@github.com:haroldcarr/utah-haskell.git
 #+END_EXAMPLE
 
-Suggest: *only* look at =2015-09-17-template= (the other directories contain answers).
+Suggest: *only* look at =2015-09-17-REST-client-wreq-aeson-foldr/exercise/= (the other directories contain answers).
 
 ** download dependencies
 
@@ -58,7 +58,7 @@ This assumes you have [[https://github.com/commercialhaskell/stack][stack]] inst
 cd utah-haskell
 
 # go to this meeting's project
-cd 2015-09-17-template
+cd 2015-09-17-REST-client-wreq-aeson-foldr/exercise
 
 # build the template (this causes dependencies to be downloaded)
 stack setup
@@ -75,7 +75,7 @@ For the meeting we will have this service running.
 cd utah-haskell
 
 # service location
-cd infrastructure
+cd 2015-09-17-REST-client-wreq-aeson-foldr/solution
 
 # build the service (and download dependencies)
 stack setup
@@ -107,7 +107,7 @@ Start ghci:
 
 #+BEGIN_EXAMPLE
 cd utah-haskell
-cd 2015-09-17-template
+cd 2015-09-17-REST-client-wreq-aeson-foldr/exercise
 stack ghci
 #+END_EXAMPLE
 
