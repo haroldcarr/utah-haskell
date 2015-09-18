@@ -1,4 +1,4 @@
-Utah Haskell Infrastructure
+Infrastructure
 
 * scotty infrastructure
 

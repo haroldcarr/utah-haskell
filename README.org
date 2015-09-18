@@ -1,6 +1,5 @@
 Utah Haskell
 
-For the Thursday, September 17, 2015 meeting, see:
-
-- [[./2015-09-17-template/README.org]]
+* 2015-09-17 : Client side REST with Wreq and Aeson (and foldr)
+- [[./2015-09-17-REST-client-wreq-aeson-foldr/exercise/README.org]]
 
