@@ -1,0 +1,24 @@
+Utah Haskell Infrastructure
+
+* scotty infrastructure
+
+#+begin_example
+wreq  <-->  scotty  --> threepenny gui <-- browser
+#+end_example
+
+** build/run
+
+#+begin_example
+stack build
+stack exec utah-haskell-exe &
+#+end_example
+
+The above:
+- starts scotty at [[http://127.0.0.0:3000]]
+  - this is where 'wreq' requests should be sent
+- starts threepenny-gui at [[http://127.0.0.1:8023]]
+  - the browser connects here
+
+To control the number of lines shown:
+- curl 127.0.0.1:3000/dGVzdDp1c2Vy/10
+  - where '10' is number of lines
