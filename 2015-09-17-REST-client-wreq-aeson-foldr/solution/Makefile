@@ -1,10 +1,10 @@
 #
 # Created       : 2015 Sep 04 (Fri) 14:46:10 by Harold Carr.
-# Last Modified : 2015 Sep 15 (Tue) 20:54:18 by Harold Carr.
+# Last Modified : 2015 Sep 30 (Wed) 22:12:00 by Harold Carr.
 #
 
 b build : FORCE
-	stack build
+	stack build --no-system-ghc
 
 r run : FORCE
 	stack exec utah-haskell-exe
@@ -20,7 +20,7 @@ t test : FORCE
 	curl -i 127.0.0.1:3000     -X POST -d '{ "name": "H", "msgId": 2, "txt": "foldA2" }'
 
 h hlint : FORCE
-	~/Library/Haskell/bin/hlint app/*.hs src/*.hs
+	hlint app/*.hs src/*.hs
 
 c clean : FORCE
 	hcRReap
