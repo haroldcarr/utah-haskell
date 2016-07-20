@@ -1,7 +1,7 @@
 flags: {}
 packages:
 - '.'
-extra-deps: [ threepenny-gui-0.6.0.3
+extra-deps: [ threepenny-gui-0.6.0.6
             , websockets-snap-0.9.2.0
             ]
-resolver: lts-3.1
+resolver: lts-6.7
